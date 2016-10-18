@@ -2,9 +2,9 @@
   "package": {
     "name": "webdav-embedded-server",
     // Bintray package name
-    "repo": "maven",
+    "repo": "webdav-embedded-server",
     // Bintray repository name
-    "subject": "TheMagican",
+    "subject": "themagican",
     // Bintray subject (user or organization)
     "desc": "Embedded WebDAV server to serve the files of a single local folder",
     "website_url": "https://github.com/TheMagican/webdav-embedded-server",
@@ -32,11 +32,11 @@
   "files": [
     {
       "includePattern": "build/libs/(.*)",
-      "uploadPattern": "de/bitinsomnia/webdav-embedded-server/$1"
+      "uploadPattern": "de/bitinsomnia/webdav-embedded-server/0.1/$1"
     },
     {
       "includePattern": "build/poms/(.*)",
-      "uploadPattern": "de/bitinsomnia/webdav-embedded-server/$1"
+      "uploadPattern": "de/bitinsomnia/webdav-embedded-server/0.1/$1"
     }
   ],
   "publish": true
