@@ -1,3 +1,7 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+import java.text.SimpleDateFormat
+
 /*
  * Copyright (C) 2016 the original author or authors.
  * See the NOTICE.md file distributed with this work for additional
@@ -142,6 +146,23 @@ tasks.install.doLast {
     }
     delete {
         delete "$buildDir/poms/pom-default.xml"
+    }
+}
+
+tasks.install.doFirst {
+    copy {
+        from "${rootProject.rootDir.absolutePath}/travis-bintray-deploy.json.template"
+        into "$buildDir/deployment/"
+        filter(ReplaceTokens, tokens:
+                [
+                        VERSION     : project.version.toString(),
+                        GIT_TAG     : System.getenv().getOrDefault("TRAVIS_TAG", "-unknown-"),
+                        RELEASE_DATE: new SimpleDateFormat("yyyy-MM-dd").format(new Date())
+                ]
+        )
+        rename { String filename ->
+            filename - ".template"
+        }
     }
 }
 

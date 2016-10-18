@@ -1,11 +1,8 @@
 {
   "package": {
-    "name": "webdav-embedded-server",
-    // Bintray package name
-    "repo": "webdav-embedded-server",
-    // Bintray repository name
-    "subject": "themagican",
-    // Bintray subject (user or organization)
+    "name": "webdav-embedded-server", // Bintray package name
+    "repo": "webdav-embedded-server", // Bintray repository name
+    "subject": "themagican",          // Bintray subject (user or organization)
     "desc": "Embedded WebDAV server to serve the files of a single local folder",
     "website_url": "https://github.com/TheMagican/webdav-embedded-server",
     "issue_tracker_url": "https://github.com/TheMagican/webdav-embedded-server/issues",
@@ -23,20 +20,19 @@
     "public_stats": false
   },
   "version": {
-    "name": "0.1",
-    "desc": "First release with basic functionality.",
-    "released": "2016-10-18",
-    "vcs_tag": "v0.1",
+    "name": "@VERSION@",
+    "released": "@RELEASE_DATE@",
+    "vcs_tag": "@GIT_TAG@",
     "gpgSign": false
   },
   "files": [
     {
       "includePattern": "build/libs/(.*)",
-      "uploadPattern": "de/bitinsomnia/webdav-embedded-server/0.1/$1"
+      "uploadPattern": "de/bitinsomnia/webdav-embedded-server/@VERSION@/$1"
     },
     {
       "includePattern": "build/poms/(.*)",
-      "uploadPattern": "de/bitinsomnia/webdav-embedded-server/0.1/$1"
+      "uploadPattern": "de/bitinsomnia/webdav-embedded-server/@VERSION@/$1"
     }
   ],
   "publish": true
