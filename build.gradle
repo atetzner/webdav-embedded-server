@@ -22,6 +22,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.ajoberstar:grgit:1.1.0'
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
     }
 }
 ext {
@@ -36,7 +37,7 @@ apply from: 'build-versioning.gradle'
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'maven'
+apply plugin: 'com.bmuschko.nexus'
 apply from: "dependencies.gradle"
 
 repositories {
@@ -87,38 +88,60 @@ jar {
     from 'NOTICE.md'
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
-    from 'LICENSE.txt'
-    from 'NOTICE.md'
-    classifier 'sources'
+extraArchive {
+    sources = true
+    tests = false
+    javadoc = true
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    from tasks.javadoc.destinationDir
-    from 'LICENSE.txt'
-    from 'NOTICE.md'
-    classifier 'javadoc'
-}
+modifyPom {
+    project {
+        name 'WebDAV embedded server'
+        description project.description
+        url 'https://github.com/TheMagican/webdav-embedded-server'
+        inceptionYear '2016'
 
-artifacts {
-    archives sourceJar
-    archives javadocJar
-}
-
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    distribution 'repo'
-                    comments 'See NOTICE.md for copyright information'
-                }
-            }
-            description = project.description
+        scm {
+            url 'https://github.com/TheMagican/webdav-embedded-server'
+            connection 'scm:https://github.com/TheMagican/webdav-embedded-server.git'
+            developerConnection 'scm:git://github.com:TheMagican/webdav-embedded-server.git'
         }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'TheMagican'
+                name 'Andreas Tetzner'
+                email 'info@http://bit-insomnia.de'
+            }
+        }
+    }
+}
+
+project.afterEvaluate {
+    [tasks.sourcesJar, tasks.javadocJar].each {
+        it.from 'LICENSE.txt'
+        it.from 'NOTICE.md'
+    }
+}
+
+tasks.install.doLast {
+    copy {
+        from "$buildDir/poms/"
+        into "$buildDir/poms/"
+        rename { String filename ->
+            filename.replaceAll("pom-default.xml", "${project.name}-${project.version}.pom")
+        }
+    }
+    delete {
+        delete "$buildDir/poms/pom-default.xml"
     }
 }
 
