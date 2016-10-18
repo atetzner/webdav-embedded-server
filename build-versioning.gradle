@@ -1,0 +1,16 @@
+// This file contains some logic for calculation of the version number
+def manualBaseVersion = "0.1"
+
+def gitTags = git.tag.list()
+def currentCommitTag = gitTags.find { it.commit == git.head() }
+
+def unstagedChanges = git.status().unstaged
+def stagedChanges = git.status().staged
+
+if (currentCommitTag != null && unstagedChanges.getAllChanges().isEmpty() && stagedChanges.getAllChanges().isEmpty()) {
+    // if the current version has a tag and there are no (un)staged changes: Use the tag name as version
+    version = currentCommitTag.name - 'v'
+} else {
+    // otherwise use the manualBaseVersion plus the abbreviated git commit id
+    version "${manualBaseVersion}-${git.head().abbreviatedId}"
+}

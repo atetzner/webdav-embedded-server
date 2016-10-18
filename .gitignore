@@ -1,0 +1,11 @@
+.gradle
+.sonar
+*.iml
+*.ipr
+*.iws
+build/
+.idea/
+.project
+.classpath
+.settings/
+

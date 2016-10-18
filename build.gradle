@@ -1,0 +1,128 @@
+/*
+ * Copyright (C) 2016 the original author or authors.
+ * See the NOTICE.md file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.ajoberstar:grgit:1.1.0'
+    }
+}
+ext {
+    git = org.ajoberstar.grgit.Grgit.open(file('.'))
+}
+
+group 'de.bitinsomnia'
+description 'Embedded WebDAV server to serve the files of a single local folder'
+apply from: 'build-versioning.gradle'
+
+
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply from: "dependencies.gradle"
+
+repositories {
+    mavenLocal();
+    jcenter();
+    maven {
+        url "http://milton.io/maven"
+    }
+}
+
+dependencies {
+    compile commons_lang
+
+    compile jetty_server
+    compile jetty_servlet
+    compile jetty_servlets
+
+    compile milton_api
+    compile milton_server
+
+    compile jcommander
+
+    compile slf4j_api
+
+    runtime logback
+
+    testCompile junit
+}
+
+idea.module {
+    downloadJavadoc = true
+    downloadSources = true
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:all" << "-Xlint:-processing" << "-Xlint:-serial" << "-Werror"
+}
+
+jar {
+    manifest {
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Main-Class": "de.bitinsomnia.webdav.server.MiltonStandaloneServer"
+        )
+    }
+    from 'LICENSE.txt'
+    from 'NOTICE.md'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    from 'LICENSE.txt'
+    from 'NOTICE.md'
+    classifier 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from tasks.javadoc.destinationDir
+    from 'LICENSE.txt'
+    from 'NOTICE.md'
+    classifier 'javadoc'
+}
+
+artifacts {
+    archives sourceJar
+    archives javadocJar
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                    comments 'See NOTICE.md for copyright information'
+                }
+            }
+            description = project.description
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "3.1"
+    distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+}
