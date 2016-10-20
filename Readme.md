@@ -1,4 +1,5 @@
 # Embedded WebDAV file server for a local folder
+[![Travis CI build status](https://travis-ci.org/TheMagican/webdav-embedded-server.svg?branch=master)](https://travis-ci.org/TheMagican/webdav-embedded-server/)
 
 ## Abstract
 This project contains a _very_ basic WebDAV server that will serve the contents of a single local folder. The only parameters for the server are:
