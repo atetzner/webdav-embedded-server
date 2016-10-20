@@ -24,7 +24,7 @@ Maven:
 
 Gradle:
 ```gradle
-dependendencies {
+dependencies {
     compile 'de.bitinsomnia:webdav-embedded-server:0.1'
 }
 ```   
