@@ -18,7 +18,7 @@ Maven:
 <dependency>
     <groupId>de.bitinsomnia</groupId>
     <artifactId>webdav-embedded-server</artifactId>
-    <version>0.1</version>
+    <version>0.1.2</version>
     <type>pom</type>
 </dependency>
 ```
@@ -26,7 +26,7 @@ Maven:
 Gradle:
 ```gradle
 dependencies {
-    compile 'de.bitinsomnia:webdav-embedded-server:0.1'
+    compile 'de.bitinsomnia:webdav-embedded-server:0.1.2'
 }
 ```   
 
