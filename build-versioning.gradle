@@ -1,5 +1,5 @@
 // This file contains some logic for calculation of the version number
-def manualBaseVersion = "0.1"
+def manualBaseVersion = "0.1.1"
 
 def gitTags = git.tag.list()
 def currentCommitTag = gitTags.find { it.commit == git.head() }
