@@ -11,14 +11,14 @@ This project contains a _very_ basic WebDAV server that will serve the contents 
 Note that this server in its current state is **not for productive usage**. Instead it is intended as a quick way to set up a WebDAV server when needed, e.g. for testing your WebDAV client library against a server with a well-known and easy to modify state.
 
 ## Usage
-This library is available on JCenter.
+This library is available on JCenter. In addition, you also need to add the Milton Bintray repository to get transitive dependencies: `http://dl.bintray.com/milton/Milton`
 
 Maven:
 ```xml
 <dependency>
     <groupId>de.bitinsomnia</groupId>
     <artifactId>webdav-embedded-server</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.1</version>
     <type>pom</type>
 </dependency>
 ```
@@ -26,9 +26,11 @@ Maven:
 Gradle:
 ```gradle
 dependencies {
-    compile 'de.bitinsomnia:webdav-embedded-server:0.1.2'
+    compile 'de.bitinsomnia:webdav-embedded-server:0.1.1'
 }
-```   
+```
+
+For more complete examples, see here: [Gradle](https://github.com/TheMagican/webdav-embedded-server/wiki/How-To-use-with-Gradle), [Maven](https://github.com/TheMagican/webdav-embedded-server/wiki/How-To-use-with-Maven)
 
 ### In other projects
 The intended usage for this server is to be used in other projects as an easy to use embedded WebDAV server, especially for automated tests. This server enables you to
