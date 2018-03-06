@@ -74,6 +74,8 @@ Usage: MiltonStandaloneServer [options] FOLDER_TO_SERVE
 
 **Example cmd-line arguments:** `-c user1:secret -c user2:password -p 4711 /path/to/data`
 
+Further information how to use the standalone server with the "fat-jar" build of `webdav-embedded-server` can be found in the [Wiki](https://github.com/TheMagican/webdav-embedded-server/wiki#how-to-use-as-standalone-program).
+
 ## Logging
 This project uses SLF4J / Logback for logging. To reduce the amount of logging (especially when using in standalone mode), place a [`logback.xml`](http://logback.qos.ch/manual/configuration.html) in the classpath.
 
