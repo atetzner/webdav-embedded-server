@@ -28,6 +28,7 @@ buildscript {
         classpath 'org.ajoberstar:grgit:2.1.0'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
     }
 }
 ext {
@@ -44,6 +45,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'com.bmuschko.nexus'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.github.johnrengelman.shadow'
 apply from: "dependencies.gradle"
 
 repositories {
@@ -99,6 +101,7 @@ extraArchive {
     tests = false
     javadoc = true
 }
+tasks.assemble.dependsOn "shadowJar"
 
 modifyPom {
     project {
@@ -125,7 +128,7 @@ modifyPom {
             developer {
                 id 'TheMagican'
                 name 'Andreas Tetzner'
-                email 'info@http://bit-insomnia.de'
+                email 'info@bit-insomnia.de'
             }
         }
     }
