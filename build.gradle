@@ -48,6 +48,29 @@ apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply from: "dependencies.gradle"
 
+sourceCompatibility = JavaVersion.VERSION_1_9
+targetCompatibility = JavaVersion.VERSION_1_9
+
+ext.moduleName = "webdav.embedded.server"
+
+compileJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+        ]
+        classpath = files()
+    }
+}
+
+javadoc {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.addStringOption('-module-path', classpath.asPath)
+        options.addBooleanOption('html5', true)
+    }
+}
+
 repositories {
     mavenLocal()
     jcenter()
@@ -172,6 +195,6 @@ tasks.install.doFirst {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "3.1"
+    gradleVersion = "4.8"
     distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 }
