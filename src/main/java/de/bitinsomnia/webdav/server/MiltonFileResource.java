@@ -177,9 +177,9 @@ public class MiltonFileResource implements FileResource, ReplaceableResource, Lo
     }
 
     @Override
-    public LockResult refreshLock(String token) throws NotAuthorizedException, PreConditionFailedException {
+    public LockResult refreshLock(String token, LockTimeout timeout) throws NotAuthorizedException, PreConditionFailedException {
         LOGGER.debug("Refreshing lock for {}", this.file);
-        return resourceFactory.getLockManager().refresh(token, this);
+        return resourceFactory.getLockManager().refresh(token, timeout, this);
     }
 
     @Override
