@@ -20,59 +20,41 @@ import java.text.SimpleDateFormat
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'org.ajoberstar:grgit:2.1.0'
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
-    }
-}
-ext {
-    git = org.ajoberstar.grgit.Grgit.open()
-}
 
 group 'de.bitinsomnia'
 description 'Embedded WebDAV server to serve the files of a single local folder'
-apply from: 'build-versioning.gradle'
+version = "development"
 
 
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'com.bmuschko.nexus'
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'com.github.johnrengelman.shadow'
 apply from: "dependencies.gradle"
 
 repositories {
     mavenLocal()
-    jcenter()
-    maven {
-        url "http://dl.bintray.com/milton/Milton"
-    }
+    mavenCentral()
 }
 
 dependencies {
-    compile commons_lang
+    implementation commons_lang
 
-    compile jetty_server
-    compile jetty_servlet
-    compile jetty_servlets
+    implementation jetty_server
+    implementation jetty_servlet
+    implementation jetty_servlets
 
-    compile milton_api
-    compile milton_server
+    implementation milton_api
+    implementation milton_server
 
-    compile jcommander
+    implementation jcommander
 
-    compile slf4j_api
+    implementation slf4j_api
 
-    runtime logback
+    implementation javaxServlet
 
-    testCompile junit
+    runtimeOnly logback
+
+    testImplementation junit
 }
 
 idea.module {
@@ -96,82 +78,28 @@ jar {
     from 'NOTICE.md'
 }
 
-extraArchive {
-    sources = true
-    tests = false
-    javadoc = true
-}
-tasks.assemble.dependsOn "shadowJar"
-
-modifyPom {
-    project {
-        name 'WebDAV embedded server'
-        description project.description
-        url 'https://github.com/TheMagican/webdav-embedded-server'
-        inceptionYear '2016'
-
-        scm {
-            url 'https://github.com/TheMagican/webdav-embedded-server'
-            connection 'scm:https://github.com/TheMagican/webdav-embedded-server.git'
-            developerConnection 'scm:git://github.com:TheMagican/webdav-embedded-server.git'
-        }
-
-        licenses {
-            license {
-                name 'The Apache Software License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                distribution 'repo'
-            }
-        }
-
-        developers {
-            developer {
-                id 'TheMagican'
-                name 'Andreas Tetzner'
-                email 'info@bit-insomnia.de'
-            }
-        }
-    }
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
-project.afterEvaluate {
-    [tasks.sourcesJar, tasks.javadocJar].each {
-        it.from 'LICENSE.txt'
-        it.from 'NOTICE.md'
-    }
-}
-
-tasks.install.doLast {
-    copy {
-        from "$buildDir/poms/"
-        into "$buildDir/poms/"
-        rename { String filename ->
-            filename.replaceAll("pom-default.xml", "${project.name}-${project.version}.pom")
-        }
-    }
-    delete {
-        delete "$buildDir/poms/pom-default.xml"
-    }
-}
-
-tasks.install.doFirst {
-    copy {
-        from "${rootProject.rootDir.absolutePath}/travis-bintray-deploy.json.template"
-        into "$buildDir/deployment/"
-        filter(ReplaceTokens, tokens:
-                [
-                        VERSION     : project.version.toString(),
-                        GIT_TAG     : System.getenv().getOrDefault("TRAVIS_TAG", "-unknown-"),
-                        RELEASE_DATE: new SimpleDateFormat("yyyy-MM-dd").format(new Date())
-                ]
+task fatJar(type: Jar) {
+    manifest {
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Main-Class": "de.bitinsomnia.webdav.server.MiltonStandaloneServer"
         )
-        rename { String filename ->
-            filename - ".template"
-        }
     }
+    archiveClassifier = "fatjar"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "3.1"
-    distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+tasks.assemble.dependsOn "fatJar"
+
+wrapper {
+    gradleVersion = "7.4.2"
+    distributionType = DistributionType.ALL
 }
