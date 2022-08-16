@@ -1,0 +1,17 @@
+name: build
+on:
+  pull_request:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: eclipse-temurin:17
+    steps:
+      - name: ☁ Checkout code
+        uses: actions/checkout@v2
+
+      - name: 📦 Build
+        shell: bash
+        run: ./gradlew clean build
