@@ -21,7 +21,8 @@ ext {
 
     commons_lang = 'org.apache.commons:commons-lang3:3.12.0'
 
-    slf4j_api = 'org.slf4j:slf4j-api:1.7.36'
+    slf4j_version = "1.7.32"
+    slf4j_api_unversioned = 'org.slf4j:slf4j-api'
     logback = 'ch.qos.logback:logback-classic:1.2.11'
 
     jetty_version = '10.0.11'

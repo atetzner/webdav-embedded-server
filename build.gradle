@@ -48,7 +48,13 @@ dependencies {
 
     implementation jcommander
 
-    implementation slf4j_api
+    implementation(slf4j_api_unversioned) {
+        version {
+            // Milton v3 raised SLF4J API version to a version unsupported by currently used
+            // logback version. Forcing downgrade.
+            strictly slf4j_version
+        }
+    }
 
     implementation javaxServlet
 
