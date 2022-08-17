@@ -1,0 +1,45 @@
+name: release
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container:
+      image: eclipse-temurin:17
+    steps:
+      - name: ☁ Checkout code
+        uses: actions/checkout@v2
+
+      - name: 🔧 Setup workflow
+        shell: bash
+        #language=BASH
+        run: |
+          VERSION=$(echo ${{ github.event.release.tag_name }} | sed 's/^v//')
+          echo Building version $VERSION
+          
+          echo VERSION=$VERSION | tee -a $GITHUB_ENV
+
+      - name: 📦 Build
+        shell: bash
+        #language=BASH
+        run: |
+          ./gradlew -Pversion=$VERSION clean build
+
+      - name: ⬆️ Publish
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PACKAGES_PUBLISH_PAT }}
+        #language=BASH
+        run: |
+          ./gradlew -Pversion=$VERSION publish
+
+      - name: 💾 Save assets to release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ github.event.release.name }}
+          tag_name: ${{ github.event.release.tag_name }}
+          token: ${{ secrets.GH_PACKAGES_PUBLISH_PAT }}
+          files: |
+            build/libs/*

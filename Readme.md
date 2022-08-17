@@ -1,5 +1,4 @@
 # Embedded WebDAV file server for a local folder
-[![Travis CI build status](https://travis-ci.org/TheMagican/webdav-embedded-server.svg?branch=master)](https://travis-ci.org/TheMagican/webdav-embedded-server/)
 
 ## Abstract
 This project contains a _very_ basic WebDAV server that will serve the contents of a single local folder. The only parameters for the server are:
@@ -11,14 +10,14 @@ This project contains a _very_ basic WebDAV server that will serve the contents 
 Note that this server in its current state is **not for productive usage**. Instead it is intended as a quick way to set up a WebDAV server when needed, e.g. for testing your WebDAV client library against a server with a well-known and easy to modify state.
 
 ## Usage
-This library is available on JCenter. In addition, you also need to add the Milton Bintray repository to get transitive dependencies: `http://dl.bintray.com/milton/Milton`
+This library is available on [GitHub Packages](https://github.com/users/atetzner/packages?repo_name=webdav-embedded-server); therefore you need to add `https://maven.pkg.github.com/atetzner/webdav-embedded-server` as an additional Gradle/Maven repository (see [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#using-a-published-package) for more information). 
 
 Maven:
 ```xml
 <dependency>
     <groupId>de.bitinsomnia</groupId>
     <artifactId>webdav-embedded-server</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
     <type>pom</type>
 </dependency>
 ```
@@ -26,11 +25,11 @@ Maven:
 Gradle:
 ```gradle
 dependencies {
-    compile 'de.bitinsomnia:webdav-embedded-server:0.1.2'
+    compile 'de.bitinsomnia:webdav-embedded-server:0.2.0'
 }
 ```
 
-For more complete examples, see here: [Gradle](https://github.com/TheMagican/webdav-embedded-server/wiki/How-To-use-with-Gradle), [Maven](https://github.com/TheMagican/webdav-embedded-server/wiki/How-To-use-with-Maven)
+For more complete examples, see here: [Gradle](https://github.com/atetzner/webdav-embedded-server/wiki/How-To-use-with-Gradle), [Maven](https://github.com/atetzner/webdav-embedded-server/wiki/How-To-use-with-Maven)
 
 ### In other projects
 The intended usage for this server is to be used in other projects as an easy to use embedded WebDAV server, especially for automated tests. This server enables you to
@@ -75,9 +74,6 @@ Usage: MiltonStandaloneServer [options] FOLDER_TO_SERVE
 **Example cmd-line arguments:** `-c user1:secret -c user2:password -p 4711 /path/to/data`
 
 Further information how to use the standalone server with the "fat-jar" build of `webdav-embedded-server` can be found in the [Wiki](https://github.com/TheMagican/webdav-embedded-server/wiki#how-to-use-as-standalone-program).
-
-## Logging
-This project uses SLF4J / Logback for logging. To reduce the amount of logging (especially when using in standalone mode), place a [`logback.xml`](http://logback.qos.ch/manual/configuration.html) in the classpath.
 
 ## Credits
 This server is based on:

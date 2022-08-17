@@ -23,12 +23,12 @@ import java.text.SimpleDateFormat
 
 group 'de.bitinsomnia'
 description 'Embedded WebDAV server to serve the files of a single local folder'
-version = "development"
 
 
 
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'maven-publish'
 apply from: "dependencies.gradle"
 
 repositories {
@@ -108,4 +108,48 @@ tasks.assemble.dependsOn "fatJar"
 wrapper {
     gradleVersion = "7.4.2"
     distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/atetzner/webdav-embedded-server")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_REPOSITORY_OWNER")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            from(components.java)
+
+            pom {
+                name = 'WebDAV embedded server'
+                description = project.description
+                url = 'https://github.com/atetzner/webdav-embedded-server'
+                inceptionYear = '2016'
+
+                licenses {
+                    license {
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'atetzner'
+                        name = 'Andreas Tetzner'
+                        email = 'info@bit-insomnia.de'
+                    }
+                }
+                scm {
+                    connection = 'scm:https://github.com/atetzner/webdav-embedded-server.git'
+                    developerConnection = 'scm:git://github.com:atetzner/webdav-embedded-server.git'
+                    url = 'https://github.com/atetzner/webdav-embedded-server'
+                }
+            }
+        }
+    }
 }
