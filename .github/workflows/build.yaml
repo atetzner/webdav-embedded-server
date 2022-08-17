@@ -15,3 +15,10 @@ jobs:
       - name: 📦 Build
         shell: bash
         run: ./gradlew clean build
+
+      - name: 💾 Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: JARs
+          path: |
+            build/libs
