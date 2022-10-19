@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat
  */
 
 
-group 'de.bitinsomnia'
+group 'io.github.atetzner'
 description 'Embedded WebDAV server to serve the files of a single local folder'
 
 
@@ -29,6 +29,7 @@ description 'Embedded WebDAV server to serve the files of a single local folder'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 apply from: "dependencies.gradle"
 
 repositories {
@@ -77,7 +78,7 @@ jar {
         attributes(
                 "Implementation-Title": project.name,
                 "Implementation-Version": project.version,
-                "Main-Class": "de.bitinsomnia.webdav.server.MiltonStandaloneServer"
+                "Main-Class": "io.github.atetzner.webdav.server.MiltonStandaloneServer"
         )
     }
     from 'LICENSE.txt'
@@ -94,7 +95,7 @@ task fatJar(type: Jar) {
         attributes(
                 "Implementation-Title": project.name,
                 "Implementation-Version": project.version,
-                "Main-Class": "de.bitinsomnia.webdav.server.MiltonStandaloneServer"
+                "Main-Class": "io.github.atetzner.webdav.server.MiltonStandaloneServer"
         )
     }
     archiveClassifier = "fatjar"
@@ -118,6 +119,14 @@ publishing {
             credentials {
                 username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_REPOSITORY_OWNER")
                 password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+        maven {
+            name = "MavenCentral"
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = project.findProperty("mvncentral.user") ?: System.getenv("MAVEN_CENTRAL_USER")
+                password = project.findProperty("mvncentral.key") ?: System.getenv("MAVEN_CENTRAL_PASSWORD")
             }
         }
     }
@@ -152,4 +161,14 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+
+    required { gradle.taskGraph.hasTask("publish") }
+    sign publishing.publications.mavenJava
+    sign configurations.archives
 }

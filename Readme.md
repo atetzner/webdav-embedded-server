@@ -10,14 +10,14 @@ This project contains a _very_ basic WebDAV server that will serve the contents 
 Note that this server in its current state is **not for productive usage**. Instead it is intended as a quick way to set up a WebDAV server when needed, e.g. for testing your WebDAV client library against a server with a well-known and easy to modify state.
 
 ## Usage
-This library is available on [GitHub Packages](https://github.com/users/atetzner/packages?repo_name=webdav-embedded-server); therefore you need to add `https://maven.pkg.github.com/atetzner/webdav-embedded-server` as an additional Gradle/Maven repository (see [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#using-a-published-package) for more information). 
+This library is available on [GitHub Packages](https://github.com/users/atetzner/packages?repo_name=webdav-embedded-server) and Maven Central. To consume the artifacts from GitHub Packages, you need to add `https://maven.pkg.github.com/atetzner/webdav-embedded-server` as an additional Gradle/Maven repository (see [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#using-a-published-package) for more information). 
 
 Maven:
 ```xml
 <dependency>
-    <groupId>de.bitinsomnia</groupId>
+    <groupId>io.github.atetzner</groupId>
     <artifactId>webdav-embedded-server</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <type>pom</type>
 </dependency>
 ```
@@ -25,7 +25,7 @@ Maven:
 Gradle:
 ```gradle
 dependencies {
-    compile 'de.bitinsomnia:webdav-embedded-server:0.2.0'
+    compile 'io.github.atetzner:webdav-embedded-server:0.2.1'
 }
 ```
 
@@ -55,7 +55,7 @@ server.stop();
 ```
 
 ### Standalone
-The class ``de.bitinsomnia.webdav.server.MiltonStandaloneServer`` contains a `main` method to start the server from the command line. It accepts several command line arguments:
+The class ``io.github.atetzner.webdav.server.MiltonStandaloneServer`` contains a `main` method to start the server from the command line. It accepts several command line arguments:
 ```
 Usage: MiltonStandaloneServer [options] FOLDER_TO_SERVE
   Options:

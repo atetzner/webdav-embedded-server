@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package de.bitinsomnia.webdav.server;
+package io.github.atetzner.webdav.server;
 
 import io.milton.http.HttpManager;
 import io.milton.servlet.MiltonServlet;
